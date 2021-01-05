@@ -1089,7 +1089,8 @@ cdef class _DynamicStructReader:
         return list(set(self.schema.fieldnames + tuple(dir(self.__class__))))
 
     def __str__(self):
-        return <char*>printStructReader(self.thisptr).flatten().cStr()
+        cdef bytes ret = printStructReader(self.thisptr).flatten().cStr()
+        return ret.decode("ascii", "backslashreplace")
 
     def __repr__(self):
         return '<%s reader %s>' % (self.schema.node.displayName, <char*>strStructReader(self.thisptr).cStr())
